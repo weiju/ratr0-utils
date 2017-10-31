@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+import argparse
+import json
+import os
+
+from ratr0.util import convert_tiled
+
+DESCRIPTION = """convert_tiled.py - TilED Conversion tool
+
+This tool takes 2 TilED files in JSON format, 1 for the tile set and one
+for the level map and converts them to RATR0 tileset and level files.
+"""
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     description=DESCRIPTION)
+    parser.add_argument('tiles_json', help="tiles (JSON) file")
+    parser.add_argument('level_json', help="level map (JSON) file")
+    parser.add_argument('tileout', help="output tile file")
+    parser.add_argument('levelout', help="output level file")
+    parser.add_argument('-ni', '--noninterleaved', action='store_true',
+                        help="store data in interleaved manner")
+    parser.add_argument('-p24', '--palette24', action='store_true',
+                        help="use a 24 bit palette instead of 12 bit")
+    parser.add_argument('-fd', '--force_depth', type=int, default=None,
+                        help="set depth to a value greater or equal the input image's value")
+    parser.add_argument('-v', '--verbose', action='store_true', help="run in verbose mode")
+    args = parser.parse_args()
+    with open(args.tiles_json) as infile:
+        intiles = json.load(infile)
+        indir = os.path.dirname(args.tiles_json)
+        convert_tiled.convert_tiles(intiles, indir, args.tileout, args.noninterleaved,
+                                    args.palette24, args.force_depth, args.verbose)
+
+    with open(args.level_json) as infile:
+        inlevel = json.load(infile)
+        convert_tiled.convert_level(inlevel,
+                                    convert_tiled.make_id2pos_map(intiles),
+                                    args.levelout, args.verbose)

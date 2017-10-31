@@ -1,0 +1,44 @@
+#!/usr/bin/env python3
+
+from PIL import Image
+
+from ratr0.util import make_tiles
+import argparse
+
+DESCRIPTION = """make_tiles.py - Amiga Image Converter
+
+This tool converts a PNG image into a tile sheet file using parameters specified on the command line"""
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     description=DESCRIPTION)
+    parser.add_argument('pngfile', help="input PNG file")
+    parser.add_argument('outfile', help="output tile sheet file")
+    parser.add_argument('-ts', '--tile_size', default=None, help="dimension of a tile, widthxheight")
+    parser.add_argument('-ni', '--non_interleaved', action='store_true',
+                        help="store data in interleaved manner")
+    parser.add_argument('-p24', '--palette24', action='store_true',
+                        help="use a 24 bit palette instead of 12 bit")
+    parser.add_argument('-fd', '--force_depth', type=int, default=None,
+                        help="set depth to a value greater or equal the input image's value")
+    parser.add_argument('-mf', '--mask_file', default=None,
+                        help="generate optional 1 bit mask file")
+    parser.add_argument('-v', '--verbose', action='store_true', help="run in verbose mode")
+
+    args = parser.parse_args()
+    im = Image.open(args.pngfile)
+    if args.tile_size is not None:
+        tile_size = tuple(map(int, args.tile_size.split('x')))
+    else:
+        tile_size = im.size
+    colors = make_tiles.make_colors(im, args.force_depth, args.verbose)
+    make_tiles.write_tiles(im, args.outfile, tile_size, colors,
+                           palette24=args.palette24,
+                           force_depth=args.force_depth,
+                           non_interleaved=args.non_interleaved,
+                           verbose=args.verbose)
+
+    if args.mask_file is not None:
+        make_tiles.write_mask(args.mask_file, im, tile_size, int(math.log2(len(colors))),
+                              non_interleaved=args.non_interleaved, verbose=args.verbose)
+
