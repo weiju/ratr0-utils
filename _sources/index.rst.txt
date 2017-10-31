@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to ratr0-utils
+Welcome to ratr0_utils
 ======================
 
 ratr0_utils is a collection of utilities for converting common multimedia formats

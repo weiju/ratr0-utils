@@ -1,0 +1,241 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>The Tiles File Format &#8212; ratr0_utils 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Level File Format" href="level_format.html" />
+    <link rel="prev" title="The ratr0-converttiled tool" href="ratr0_converttiled.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="the-tiles-file-format">
+<h1>The Tiles File Format<a class="headerlink" href="#the-tiles-file-format" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>One of the common tasks in game development is to arrange image files
+into sets of rectangular areas, which are called <strong>tiles</strong>. Tiles are
+generally used in classic 2D games, but even in modern 3D games,
+a common task is still arranging two-dimensional textures into texture
+atlasses in a similar fashion.</p>
+<p>The RATR0 tiles format in its current form simply defines a regular
+grid of rectangles on top of an image file. Since its initial and
+primary target platform is the Commodore Amiga OCS (<strong>O</strong>riginal <strong>C</strong>hip <strong>S</strong>et)
+hardware, the default settings of the <a class="reference internal" href="ratr0_maketiles.html"><span class="doc">ratr0-maketiles</span></a> utility
+will generate image information that can be easily used on this platform.</p>
+<p>However the file format was designed to be flexible enough to support a variety
+of platforms and graphics technologies.</p>
+</div>
+<div class="section" id="specification">
+<h2>Specification<a class="headerlink" href="#specification" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="header">
+<h3>Header<a class="headerlink" href="#header" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="15%" />
+<col width="68%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Byte number(s)</th>
+<th class="head">Name</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0-7</td>
+<td>ID</td>
+<td>Always <code class="docutils literal"><span class="pre">'RATR0TIL'</span></code></td>
+</tr>
+<tr class="row-odd"><td>8</td>
+<td>version</td>
+<td>file format version</td>
+</tr>
+<tr class="row-even"><td>9</td>
+<td>flags</td>
+<td><div class="first last line-block">
+<div class="line">bit 0: not set -&gt; big endian, set -&gt; little endian</div>
+<div class="line">bit 1: not set -&gt; 12 bit RGB, set -&gt; 24 bit RGB</div>
+<div class="line">bit 2: not set -&gt; interleaved, set -&gt; non-interleaved</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>reserved1</td>
+<td>reserved byte, currently only used as padding</td>
+</tr>
+<tr class="row-even"><td>11</td>
+<td>depth</td>
+<td>image depth in number of bits</td>
+</tr>
+<tr class="row-odd"><td>12-13</td>
+<td>width</td>
+<td>image width in pixels</td>
+</tr>
+<tr class="row-even"><td>14-15</td>
+<td>height</td>
+<td>image height in pixels</td>
+</tr>
+<tr class="row-odd"><td>16-17</td>
+<td>tile_size_h</td>
+<td>horizontal tile size in pixels</td>
+</tr>
+<tr class="row-even"><td>18-19</td>
+<td>tile_size_v</td>
+<td>vertical tile size in pixels</td>
+</tr>
+<tr class="row-odd"><td>20-21</td>
+<td>num_tiles_h</td>
+<td>number of tiles in horizontal direction</td>
+</tr>
+<tr class="row-even"><td>22-23</td>
+<td>num_tiles_v</td>
+<td>number of tiles in vertical direction</td>
+</tr>
+<tr class="row-odd"><td>24-25</td>
+<td>palette_size</td>
+<td>number of color entries in the palette</td>
+</tr>
+<tr class="row-even"><td>26-27</td>
+<td>reserved2</td>
+<td>reserved 16 bit, currently only padding</td>
+</tr>
+<tr class="row-odd"><td>28-31</td>
+<td>imgdata_size</td>
+<td>size of image data in bytes</td>
+</tr>
+<tr class="row-even"><td>32-35</td>
+<td>checksum</td>
+<td>checksum of the file (currently unused)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="palette-data">
+<h3>Palette Data<a class="headerlink" href="#palette-data" title="Permalink to this headline">¶</a></h3>
+<p>Following the file header is a block consisting of the palette entries.
+If the colors are decoded in 12 bit (4 bit per color), this block will
+have the size <em>(palette_size * 2)</em> bytes, if they are decoded as 1 byte
+triplets per color (24 bit) the size of the block will be
+<em>(palette_size * 3)</em> bytes</p>
+</div>
+<div class="section" id="image-data">
+<h3>Image Data<a class="headerlink" href="#image-data" title="Permalink to this headline">¶</a></h3>
+<p>Immediately following the palette data is the image data encoding as
+<em>depth</em> planes. This data is of the size <em>((width * height * depth) / 8)</em> bytes.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ratr0_utils</a></h1>
+
+
+
+<p class="blurb">Data conversion utilities for the RATR0 game engine</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=weiju&repo=ratr0_utils&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ratr0_maketiles.html">ratr0-maketiles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ratr0_converttiled.html">ratr0-converttiled</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tiles File Format</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#specification">Specification</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="level_format.html">Level File Format</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ratr0_converttiled.html" title="previous chapter">The ratr0-converttiled tool</a></li>
+      <li>Next: <a href="level_format.html" title="next chapter">The Level File Format</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Wei-ju Wu.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/tile_format.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/weiju/ratr0_utils" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

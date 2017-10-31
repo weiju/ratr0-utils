@@ -1,0 +1,186 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>The ratr0-converttiled tool &#8212; ratr0_utils 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The Tiles File Format" href="tile_format.html" />
+    <link rel="prev" title="The ratr0-maketiles tool" href="ratr0_maketiles.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="the-ratr0-converttiled-tool">
+<h1>The ratr0-converttiled tool<a class="headerlink" href="#the-ratr0-converttiled-tool" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://www.mapeditor.org/">Tiled</a> is a powerful and popular open source level
+editor. Rather than implementing its own level editor, the RATR0 engine relies
+on Tiled to provide this critital functionality.</p>
+<p>The <code class="docutils literal"><span class="pre">ratr0-converttiled</span></code> utility can be used to convert Tiled’s JSON format
+to into RATR0’s level and tile file formats</p>
+<p>You can see the tool’s available options when you enter <code class="docutils literal"><span class="pre">ratr0-converttiled</span> <span class="pre">-h</span></code>
+at the command prompt:</p>
+<div class="highlight-none"><div class="highlight"><pre><span></span>usage: ratr0-converttiled [-h] [-ni] [-p24] [-fd FORCE_DEPTH] [-v]
+                          tiles_json level_json tileout levelout
+
+convert_tiled.py - TilED Conversion tool
+
+This tool takes 2 TilED files in JSON format, 1 for the tile set and one
+for the level map and converts them to RATR0 tileset and level files.
+
+positional arguments:
+  tiles_json            tiles (JSON) file
+  level_json            level map (JSON) file
+  tileout               output tile file
+  levelout              output level file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -ni, --noninterleaved store data in interleaved manner
+  -p24, --palette24     use a 24 bit palette instead of 12 bit
+  -fd FORCE_DEPTH, --force_depth FORCE_DEPTH
+                        set depth to a value greater or equal the input
+                        image&#39;s value
+  -v, --verbose         run in verbose mode
+</pre></div>
+</div>
+<div class="section" id="parameters-in-detail">
+<h2>Parameters in detail<a class="headerlink" href="#parameters-in-detail" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal"><span class="pre">ratr0-converttiled</span></code> expects at least these 4 arguments:</p>
+<blockquote>
+<div><ul class="simple">
+<li><strong>tiles_json:</strong> This is the file that Tiled uses to store a tile set. Please note
+that this file also includes a reference to the image file the tile set is based
+on, so that image file needs to be in the same place that Tiled would expect it</li>
+<li><strong>level_json:</strong> This is the file that Tiled uses to store a level.</li>
+<li><strong>tileout:</strong> This file will be created by the conversion tool to store the tile set
+in RATR0 tiles format.</li>
+<li><strong>levelout:</strong> This file will be created by the conversion tool to store the level data
+in RATR0 level format</li>
+</ul>
+</div></blockquote>
+<p>In addition, you can specify the following optional arguments:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal"><span class="pre">--non-interleaved</span></code> or <code class="docutils literal"><span class="pre">--ni</span></code>: the tile set’s image information will be stored
+as non-interleaved bitplanes rather than interleaved bitplanes</li>
+<li><code class="docutils literal"><span class="pre">--palette24</span></code> or <code class="docutils literal"><span class="pre">-p24</span></code>: The palette’s color entries will be saved as 24 bit
+information (r, g, b triplets with a size of 8 bit each). By default, color entries
+are of size 16 bit that encodes a 12 bit color triplet, 4 bit for each color component</li>
+<li><code class="docutils literal"><span class="pre">--force-depth</span></code> or <code class="docutils literal"><span class="pre">-fd</span></code>: This argument takes an additional parameter that specifies
+the actual number of bitplanes that will be generated in the tiles file. By this means
+you can force the converter into generating more bitplanes if the program requires it</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">ratr0_utils</a></h1>
+
+
+
+<p class="blurb">Data conversion utilities for the RATR0 game engine</p>
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=weiju&repo=ratr0_utils&type=watch&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="ratr0_maketiles.html">ratr0-maketiles</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ratr0-converttiled</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#parameters-in-detail">Parameters in detail</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tile_format.html">Tiles File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="level_format.html">Level File Format</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="ratr0_maketiles.html" title="previous chapter">The ratr0-maketiles tool</a></li>
+      <li>Next: <a href="tile_format.html" title="next chapter">The Tiles File Format</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Wei-ju Wu.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/ratr0_converttiled.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/weiju/ratr0_utils" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
