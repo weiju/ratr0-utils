@@ -9,6 +9,10 @@ It also aims for providing data conversion tools that target
 retro platforms and that are open and documented without
 intentionally keeping secrets from its users.
 
+Detailed documentation available at
+
+https://weiju.github.io/ratr0-utils/
+
 ## Build distribution
 
 Note: While developing, there seems to be a confusion how

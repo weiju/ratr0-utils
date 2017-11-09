@@ -12,7 +12,7 @@ the below ``pip`` invocation becomes ``pip3``:
 
 ::
 
-   $ pip install ratr0_utils
+   $ pip install ratr0-utils
 
 
 From source
