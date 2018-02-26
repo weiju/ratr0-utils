@@ -5,7 +5,7 @@ from PIL import Image
 from ratr0.util import make_tiles
 import argparse
 
-DESCRIPTION = """make_tiles.py - Amiga Image Converter
+DESCRIPTION = """ratr0-maketiles - Amiga Image Converter
 
 This tool converts a PNG image into a tile sheet file using parameters specified on the command line"""
 

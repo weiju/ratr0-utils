@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+
+import argparse
+
+DESCRIPTION = """ratr0-file - RATR0 file information printer
+
+This tool prints information about the specified file if it is
+in one of the RATR0 file formats
+"""
+from ratr0.util import file_info
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     description=DESCRIPTION)
+    parser.add_argument('infile', help="input file")
+    args = parser.parse_args()
+    with open(args.infile, 'rb') as infile:
+        file_info.file_info(infile)

@@ -9,7 +9,7 @@ DESCRIPTION = 'ratr0-utils is a collection of utilties for game developmen using
 LICENSE = 'GPL V3'
 URI = 'https://github.com/weiju/ratr0-utils'
 AUTHOR = 'Wei-ju Wu'
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 
 KEYWORDS = ['ratr0', 'amiga']
 
@@ -53,4 +53,5 @@ if __name__ == '__main__':
           scripts=['bin/ratr0-maketiles',
                    'bin/ratr0-makelevel',
                    'bin/ratr0-converttiled',
+                   'bin/ratr0-file',
                    'bin/ratr0-wav2raw8'])

@@ -53,7 +53,7 @@ def make_colors(im, force_depth, verbose):
     if im.palette is not None:
         palette_bytes = list(im.palette.palette) if im.palette.rawmode else im.palette.tobytes()
         colors = [i for i in png_util.chunks([b for b in palette_bytes], 3)]
-        depth =  round(math.log(len(colors), 2))
+        depth =  math.ceil(math.log(len(colors), 2))
     else:
         colors = [[0, 0, 0], [255, 255, 255]]
         depth = 1

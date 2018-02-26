@@ -18,7 +18,8 @@ Byte number(s) Name         Description
 ============== ============ ======================================================
 0-7            ID           Always ``'RATR0LVL'``
 8              version      file format version
-9              flags        special flags
+9              flags        | bit 0: not set -> big endian, set -> little endian
+                            | rest: currently unused
 10-11          width        level width in tiles
 12-13          height       level height in tiles
 14-15          vp_width     viewport width in tiles
