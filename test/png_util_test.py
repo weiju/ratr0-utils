@@ -4,8 +4,8 @@
 """
 import unittest
 import xmlrunner
-import png_util
 import sys
+from ratr0.util import png_util
 
 class MockImage(object):
     """just a mock up to imitate a PIL image object"""

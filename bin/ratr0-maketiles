@@ -2,8 +2,9 @@
 
 from PIL import Image
 
-from ratr0.util import make_tiles
+from ratr0.util import tiles, png_util
 import argparse
+import math
 
 DESCRIPTION = """ratr0-maketiles - Amiga Image Converter
 
@@ -31,14 +32,16 @@ if __name__ == '__main__':
         tile_size = tuple(map(int, args.tile_size.split('x')))
     else:
         tile_size = im.size
-    colors = make_tiles.make_colors(im, args.force_depth, args.verbose)
-    make_tiles.write_tiles(im, args.outfile, tile_size, colors,
-                           palette24=args.palette24,
-                           force_depth=args.force_depth,
-                           non_interleaved=args.non_interleaved,
-                           verbose=args.verbose)
+    colors = png_util.make_colors(im, args.force_depth, args.verbose)
+    tiles.write_tiles(im, args.outfile, tile_size, colors,
+                      palette24=args.palette24,
+                      non_interleaved=args.non_interleaved,
+                      verbose=args.verbose)
 
     if args.mask_file is not None:
-        make_tiles.write_mask(args.mask_file, im, tile_size, int(math.log2(len(colors))),
-                              non_interleaved=args.non_interleaved, verbose=args.verbose)
+        tiles.write_mask(args.mask_file, im, tile_size,
+                         int(math.log2(len(colors))),
+                         palette24=args.palette24,
+                         non_interleaved=args.non_interleaved,
+                         verbose=args.verbose)
 

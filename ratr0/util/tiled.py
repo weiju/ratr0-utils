@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""convert_tiled.py - TilED conversion tool
+"""iled.py - TilED conversion tool
 
 TilED is a great cross-platform tool to create level data. This conversion
 tool converts the JSON data from TilED to generate level data for the
@@ -9,7 +9,7 @@ import json
 import os
 from PIL import Image
 
-from ratr0.util import make_tiles, make_level
+from ratr0.util import tiles, levels
 
 
 def convert_tiles(intiles, indir, outfile, non_interleaved,
@@ -18,11 +18,11 @@ def convert_tiles(intiles, indir, outfile, non_interleaved,
     tile_width = intiles['tilewidth']
     tile_height = intiles['tileheight']
     im = Image.open(imagepath)
-    colors = make_tiles.make_colors(im, force_depth, verbose)
-    make_tiles.write_tiles(im, outfile, [tile_width, tile_height], colors,
-                           palette24=palette24,
-                           force_depth=force_depth,
-                           non_interleaved=non_interleaved, verbose=verbose)
+    colors = tiles.make_colors(im, force_depth, verbose)
+    tiles.write_tiles(im, outfile, [tile_width, tile_height], colors,
+                      palette24=palette24,
+                      force_depth=force_depth,
+                      non_interleaved=non_interleaved, verbose=verbose)
 
 
 def chunks(l, k):
@@ -46,7 +46,7 @@ def convert_level(inlevel, id2pos_map, outfile, verbose):
         },
         "map":  rows
     }
-    make_level.write_level(ratr0_level, outfile, verbose)
+    levels.write_level(ratr0_level, outfile, verbose)
 
 def make_id2pos_map(intiles):
     columns = intiles["columns"]

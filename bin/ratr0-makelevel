@@ -3,9 +3,9 @@
 import argparse
 import json
 
-from ratr0.util import make_level
+from ratr0.util import levels
 
-DESCRIPTION = """make_level.py - Amiga Level Builder
+DESCRIPTION = """ratr0-makelevel - Amiga Level Builder
 
 This tool converts a level description into a binary level file using parameters specified
 on the command line"""
@@ -17,4 +17,4 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', action='store_true', help="run in verbose mode")
     args = parser.parse_args()
     with open(args.level_json) as jsonfile:
-        make_level.write_level(json.load(jsonfile), args.outfile, args.verbose)
+        levels.write_level(json.load(jsonfile), args.outfile, args.verbose)

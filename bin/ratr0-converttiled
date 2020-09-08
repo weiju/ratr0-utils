@@ -4,9 +4,9 @@ import argparse
 import json
 import os
 
-from ratr0.util import convert_tiled
+from ratr0.util import tiled
 
-DESCRIPTION = """convert_tiled.py - TilED Conversion tool
+DESCRIPTION = """ratr0-converttiled - TilED Conversion tool
 
 This tool takes 2 TilED files in JSON format, 1 for the tile set and one
 for the level map and converts them to RATR0 tileset and level files.
@@ -30,11 +30,11 @@ if __name__ == '__main__':
     with open(args.tiles_json) as infile:
         intiles = json.load(infile)
         indir = os.path.dirname(args.tiles_json)
-        convert_tiled.convert_tiles(intiles, indir, args.tileout, args.noninterleaved,
-                                    args.palette24, args.force_depth, args.verbose)
+        tiled.convert_tiles(intiles, indir, args.tileout, args.noninterleaved,
+                            args.palette24, args.force_depth, args.verbose)
 
     with open(args.level_json) as infile:
         inlevel = json.load(infile)
-        convert_tiled.convert_level(inlevel,
-                                    convert_tiled.make_id2pos_map(intiles),
-                                    args.levelout, args.verbose)
+        tiled.convert_level(inlevel,
+                            convert_tiled.make_id2pos_map(intiles),
+                            args.levelout, args.verbose)

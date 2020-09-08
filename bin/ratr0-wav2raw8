@@ -10,7 +10,7 @@ fi
 exe_path=$(command -v sox)
 echo "exe path: $exe_path"
 if [ -x "$exe_path" ] ; then
-  
+
   # sox -t wav $1 -b 8 -t s8 $2 channels 1 rate 22050
   #sox -t wav $1 -b 8 -t s8 $2 channels 1 rate 11025
   sox -t wav $1 -b 8 -t s8 $2 channels 1 rate 14k

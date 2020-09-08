@@ -47,7 +47,13 @@ def extract_planes(im, depth, verbose):
                     if planebits[planeidx]:
                         planes[planeidx][pos] |= (1 << (15 - (x + i) % 16)) # 1 << ((x + i) % 16)
             x += 16
-    #print(planes)
+
+    if verbose:
+        for i, plane in enumerate(planes):
+            print("Plane %d: " % i)
+            words = ['%04x' % w for w in plane]
+            print(' '.join(words))
+
     return planes, map_words_per_row
 
 
@@ -55,6 +61,7 @@ def interleave_planes(planes, map_words_per_row):
     """transforms a set of bitplanes into a large array of 16-bit
     word rows. each representing a line of an image
     """
+    print("INTERLEAVE !!!")
     # 1. for each plane generate a list of lists of <map_words_per_row>
     # values
     chunked = list([list(chunks(plane, map_words_per_row)) for plane in planes])
@@ -67,3 +74,35 @@ def interleave_planes(planes, map_words_per_row):
         for chunk in chunked:
             result.append(chunk[i])
     return result
+
+
+def make_colors(im, final_depth, verbose):
+    """
+    Extract the palette entries from the image and fills it with 0 entries if
+    final_depth is set and larger
+    """
+    if im.palette is not None:
+        palette_bytes = list(im.palette.palette) if im.palette.rawmode else im.palette.tobytes()
+        colors = [i for i in chunks([b for b in palette_bytes], 3)]
+        depth =  math.ceil(math.log(len(colors), 2))
+    else:
+        colors = [[0, 0, 0], [255, 255, 255]]
+        depth = 1
+
+    if verbose:
+        print("input image depth: %d" % depth)
+
+    if depth == 0:
+        raise Exception("images with only 1 color can't be handled")
+    elif final_depth is not None:
+        if final_depth < depth:
+            raise Exception('final_depth must be greater or equal actual depth !')
+        if verbose:
+            print('overriding input depth (%d) with %d' % (depth, final_depth))
+        depth = final_depth
+    num_missing_colors = 2 ** depth - len(colors)
+
+    if verbose:
+        print('adding %d missing colors' % num_missing_colors)
+    colors += [[0, 0, 0]] * num_missing_colors
+    return colors

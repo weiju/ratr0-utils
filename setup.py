@@ -5,13 +5,13 @@ from setuptools import setup
 
 NAME = 'ratr0_utils'
 PACKAGES = ['ratr0.util']
-DESCRIPTION = 'ratr0-utils is a collection of utilties for game developmen using the RATR0 engine'
+DESCRIPTION = 'ratr0-utils is a collection of utilties for game development using the RATR0 engine'
 LICENSE = 'GPL V3'
 URI = 'https://github.com/weiju/ratr0-utils'
 AUTHOR = 'Wei-ju Wu'
-VERSION = '0.1.1'
+VERSION = '0.1.2'
 
-KEYWORDS = ['ratr0', 'amiga']
+KEYWORDS = ['ratr0', 'amiga', 'game', 'development', 'classic', 'ecs', 'aga']
 
 # See trove classifiers
 # https://testpypi.python.org/pypi?%3Aaction=list_classifiers

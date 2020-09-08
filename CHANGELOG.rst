@@ -1,6 +1,19 @@
 Changes
 =======
 
+Version 0.1.3, 2020/09/08
+-------------------------
+
+  - internal refactoring
+  - ratr0-file: print palette entries, support sprite files
+  - ratr0-makefiles: support 24-bit palette depth
+  - ratr0-makesprites: new tool: create sprite files
+
+Version 0.1.2, 2019/01/30
+-------------------------
+
+  - fix for ratr0-maketiles: mask files
+
 Version 0.1.1, 2018/02/26
 -------------------------
 

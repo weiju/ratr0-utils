@@ -3,56 +3,57 @@
 """
 A tool to get the information of a RATR0 file type
 """
+from . import tiles, sprites
 
 RATR0_FILE_ID_LENGTH = 8
 
 
 def print_tiles_info(infile):
-    version = ord(infile.read(1))
-    flags = ord(infile.read(1))
-    if flags & 0x01 == 1:
-        big_endian = False
-        byte_order = "little"
-    else:
-        big_endian = True
-        byte_order = "big"
-    if flags & 0x02 == 2:
-        rgb_format = 24
-    else:
-        rgb_format = 12
-    if flags & 0x04 == 4:
-        interleaved = False
-    else:
-        interleaved = True
-
-    reserved1 = infile.read(1)
-    depth = ord(infile.read(1))
-
-    width = int.from_bytes(infile.read(2), byteorder=byte_order)
-    height = int.from_bytes(infile.read(2), byteorder=byte_order)
-
-    tile_size_h = int.from_bytes(infile.read(2), byteorder=byte_order)
-    tile_size_v = int.from_bytes(infile.read(2), byteorder=byte_order)
-    num_tiles_h = int.from_bytes(infile.read(2), byteorder=byte_order)
-    num_tiles_v = int.from_bytes(infile.read(2), byteorder=byte_order)
-    palette_size = int.from_bytes(infile.read(2), byteorder=byte_order)
-    reserved2 = infile.read(2)
-    imgdata_size = int.from_bytes(infile.read(4), byteorder=byte_order)
-
+    tiles_info = tiles.read_tiles_info(infile)
     print("RATR0 Tile File")
-    print("Version: %d" % version)
-    print("Endianess: %s" % byte_order)
-    print("RGB Format: %d" % rgb_format)
-    print("Interleaved: %s" % str(interleaved))
-    print("width: %d, height: %d" % (width, height))
-    print("# bitplanes: %d" % depth)
-    print("tile size: %dx%d" % (tile_size_h, tile_size_v))
-    print("num tiles: %dx%d" % (num_tiles_h, num_tiles_v))
-    print("num palette entries: %d" % palette_size)
-    print("# image data bytes: %d" % imgdata_size)
+    print(tiles_info)
 
 
-def print_level_info(infile):
+def print_sprite_info(infile):
+    sprite_info = sprites.read_sprite_info(infile)
+    print("RAT0 Sprite File")
+    print(sprite_info)
+    for i in range(sprite_info.num_sprites):
+        spr_offset = int.from_bytes(infile.read(2), byteorder="big")
+        print("Sprite %d, offset: %d" % (i, spr_offset))
+
+
+class LevelInfo:
+
+    def __init__(self, version, flags, width, height, vp_width, vp_height,
+                 init_vp_row, init_vp_col):
+        self.version = version
+        self.flags = flags
+        self.width = width
+        self.height = height
+        self.vp_width = vp_width
+        self.vp_height = vp_height
+        self.init_vp_row = init_vp_row
+        self.init_vp_col = init_vp_col
+
+    def __str__(self):
+        if self.flags & 0x01 == 1:
+            big_endian = False
+            byte_order = "little"
+        else:
+            big_endian = True
+            byte_order = "big"
+
+        out = "Version: %d\n" % self.version
+        out += "Endianess: %s\n" % byte_order
+        out += "size: %dx%d tiles\n" % (self.width, self.height)
+        out += "viewport size: %dx%d tiles\n" % (self.vp_width, self.vp_height)
+        out += "initial viewport pos: (%d, %d)\n" % (self.init_vp_col, self.init_vp_row)
+        return out
+
+
+
+def read_level_info(infile):
     version = ord(infile.read(1))
     flags = ord(infile.read(1))
 
@@ -69,13 +70,14 @@ def print_level_info(infile):
     vp_height = int.from_bytes(infile.read(2), byteorder=byte_order)
     init_vp_row = int.from_bytes(infile.read(2), byteorder=byte_order)
     init_vp_col = int.from_bytes(infile.read(2), byteorder=byte_order)
+    return LevelInfo(version, flags, width, height, vp_width, vp_height, init_vp_row,
+                     init_vp_col)
 
+
+def print_level_info(infile):
+    level_info = read_level_info(infile)
     print("RATR0 Level File")
-    print("Version: %d" % version)
-    print("Endianess: %s" % byte_order)
-    print("size: %dx%d tiles" % (width, height))
-    print("viewport size: %dx%d tiles" % (vp_width, vp_height))
-    print("initial viewport pos: (%d, %d)" % (init_vp_col, init_vp_row))
+    print(level_info)
 
 
 def file_info(infile):
@@ -85,5 +87,7 @@ def file_info(infile):
         print_tiles_info(infile)
     elif fileid == "RATR0LVL":
         print_level_info(infile)
+    elif fileid == "RATR0SPR":
+        print_sprite_info(infile)
     else:
         print("unknown file type")

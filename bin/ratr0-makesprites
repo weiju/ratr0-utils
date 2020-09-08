@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+from PIL import Image
+
+from ratr0.util import sprites
+import argparse
+import math
+
+DESCRIPTION = """ratr0-makesprites - Amiga Sprite Sheet generator
+
+This tool converts a PNG image into a sprite sheet file using parameters specified on the command line"""
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     description=DESCRIPTION)
+    parser.add_argument('pngfile', help="input PNG file")
+    parser.add_argument('outfile', help="output sprite sheet file")
+    parser.add_argument('-v', '--verbose', action='store_true', help="run in verbose mode")
+
+    args = parser.parse_args()
+    im = Image.open(args.pngfile)
+    sprites.write_sprites(im, args.outfile, verbose=args.verbose)
+
