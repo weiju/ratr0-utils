@@ -48,10 +48,6 @@ except that the ATTACH flag is set
 
 if the width was a multiple of 16, there will be data for up to 8 sprites in a row
 
-TODO: 1 BUG
-
-1. there is an error in the image data of the binary file
-
 """
 FILE_FORMAT_VERSION = 1
 
@@ -129,20 +125,28 @@ def write_sprites(im, outpath, verbose, csource_path='sprdata.c'):
             if verbose:
                 print('%s %s' % (hexstr, binstr))
             imgdata_size += 2  # add up the size
-    imgdata_size += 8  # add the sprite control words
+    imgdata_size += 8 * num_sprites  # add the sprite control words for each sprite
 
     header = SpriteInfoHeader(FILE_FORMAT_VERSION, 0, len(colors), num_sprites, imgdata_size)
     with open(outpath, 'wb') as outfile:
         header.write(outfile)
 
+        outstr = ""  # for generating C source code
+
         # 1. write sprite descriptors
         for i in range(num_sprites):
-            outfile.write(struct.pack(">H", i * (im.height * 2 + 8)))  # offset into the data
+            # offset into the data, height * num planes * 2 bytes (16 pixels) + 8 bytes overhead
+            outfile.write(struct.pack(">H", i * (im.height * 4 + 8)))
 
 
         # 2. write the palette entries used
+        outstr += "UWORD palette[] = {\n"
+        outcols = []
         for color in colors:
             outfile.write(struct.pack(">H", (color & 0x0fff)))
+            outcols.append('0x%04x' % (color & 0x0fff))
+        outstr += "  " + ', '.join(outcols)
+        outstr += "\n};\n\n"
 
         # 3. write sprite data
         if len(planes) == 2:
@@ -152,7 +156,6 @@ def write_sprites(im, outpath, verbose, csource_path='sprdata.c'):
 
         xparts = int(im.width / 16)
         sprite_num = 0
-        outstr = ""
         xpos = 0  # xpos if we have wide sprites
         while xpos < xparts:
             for write_planes in vbatches:
@@ -186,7 +189,6 @@ def write_sprites(im, outpath, verbose, csource_path='sprdata.c'):
                 # next sprite
                 sprite_num += 1
             xpos += 1  # advance x position by 16 pixel in case the sprite is wide
-    print("Last Sprite written: ", sprite_num)
 
     # more of a control mechanism
     if csource_path is not None:
