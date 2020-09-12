@@ -48,6 +48,9 @@ except that the ATTACH flag is set
 
 if the width was a multiple of 16, there will be data for up to 8 sprites in a row
 
+TODO: 1 BUG
+
+1. there is an error in the image data of the binary file
 
 """
 FILE_FORMAT_VERSION = 1
@@ -151,7 +154,7 @@ def write_sprites(im, outpath, verbose, csource_path='sprdata.c'):
         sprite_num = 0
         outstr = ""
         xpos = 0  # xpos if we have wide sprites
-        while xpos < im.width:
+        while xpos < xparts:
             for write_planes in vbatches:
                 p0 = write_planes[0]
                 p1 = write_planes[1]
@@ -169,7 +172,7 @@ def write_sprites(im, outpath, verbose, csource_path='sprdata.c'):
 
                 num_rows = int(len(p0) / xparts)
                 for i in range(num_rows):
-                    idx = i * xparts
+                    idx = i * xparts + xpos
                     outfile.write(struct.pack('>H', p0[idx]))
                     outfile.write(struct.pack('>H', p1[idx]))
                     outstr += "  0x%04x, 0x%04x,\n" % (p0[idx], p1[idx])
@@ -182,7 +185,7 @@ def write_sprites(im, outpath, verbose, csource_path='sprdata.c'):
 
                 # next sprite
                 sprite_num += 1
-            xpos += 16  # advance x position by 16 pixel in case the sprite is wide
+            xpos += 1  # advance x position by 16 pixel in case the sprite is wide
     print("Last Sprite written: ", sprite_num)
 
     # more of a control mechanism
