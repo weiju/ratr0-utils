@@ -9,7 +9,7 @@ DESCRIPTION = 'ratr0-utils is a collection of utilties for game development usin
 LICENSE = 'GPL V3'
 URI = 'https://github.com/weiju/ratr0-utils'
 AUTHOR = 'Wei-ju Wu'
-VERSION = '0.1.2'
+VERSION = '0.1.3'
 
 KEYWORDS = ['ratr0', 'amiga', 'game', 'development', 'classic', 'ecs', 'aga']
 
@@ -51,6 +51,7 @@ if __name__ == '__main__':
           install_requires=INSTALL_REQUIRES,
           include_package_data=True, package_data=PACKAGE_DATA,
           scripts=['bin/ratr0-maketiles',
+                   'bin/ratr0-makesprites',
                    'bin/ratr0-makelevel',
                    'bin/ratr0-converttiled',
                    'bin/ratr0-file',

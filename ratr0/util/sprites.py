@@ -79,8 +79,7 @@ class SpriteInfoHeader:
 
 
 
-def write_sprites(im, outpath, verbose, csource_path='sprdata.c'):
-
+def write_sprites(im, outpath, verbose, csource_path):
     colors = png_util.make_colors(im, None, verbose)
     depth = int(math.log2(len(colors)))
     colors = [(((r >> 4) & 0x0f) << 8) | (((g >> 4) & 0x0f) << 4) | ((b >> 4) & 0x0f)
