@@ -79,7 +79,7 @@ class SpriteInfoHeader:
 
 
 
-def write_sprites(im, outpath, verbose, csource_path):
+def write_sprites(im, outpath, verbose, generatec):
     colors = png_util.make_colors(im, None, verbose)
     depth = int(math.log2(len(colors)))
     colors = [(((r >> 4) & 0x0f) << 8) | (((g >> 4) & 0x0f) << 4) | ((b >> 4) & 0x0f)
@@ -126,62 +126,42 @@ def write_sprites(im, outpath, verbose, csource_path):
             imgdata_size += 2  # add up the size
     imgdata_size += 8 * num_sprites  # add the sprite control words for each sprite
 
-    header = SpriteInfoHeader(FILE_FORMAT_VERSION, 0, len(colors), num_sprites, imgdata_size)
-    with open(outpath, 'wb') as outfile:
-        header.write(outfile)
 
+    # subdivide image data by planes and horizontal size
+    if len(planes) == 2:
+        vbatches = [planes]
+    else:  # 4 planes
+        vbatches = [planes[:2], planes[2:]]
+    xparts = int(im.width / 16)
+    sprite_height = len(vbatches[0][0])
+
+    if generatec:
         outstr = ""  # for generating C source code
-
-        # 1. write sprite descriptors
-        for i in range(num_sprites):
-            # offset into the data, height * num planes * 2 bytes (16 pixels) + 8 bytes overhead
-            outfile.write(struct.pack(">H", i * (im.height * 4 + 8)))
-
-
-        # 2. write the palette entries used
         outstr += "UWORD palette[] = {\n"
         outcols = []
         for color in colors:
-            outfile.write(struct.pack(">H", (color & 0x0fff)))
             outcols.append('0x%04x' % (color & 0x0fff))
         outstr += "  " + ', '.join(outcols)
         outstr += "\n};\n\n"
 
-        # 3. write sprite data
-        if len(planes) == 2:
-            vbatches = [planes]
-        else:  # 4 planes
-            vbatches = [planes[:2], planes[2:]]
-
-        xparts = int(im.width / 16)
         sprite_num = 0
         xpos = 0  # xpos if we have wide sprites
         while xpos < xparts:
             for write_planes in vbatches:
                 p0 = write_planes[0]
                 p1 = write_planes[1]
-                sprite_height = len(write_planes[0])
 
                 if verbose:
                     print("writing sprite number %d (height: %d, attach: %02x)" % (sprite_num, sprite_height, attach))
-                # now write the sprite structures
-                # The 2 start words, write the height in rows into the sprite
-                # so the reader knows where the next sprite is
-                outfile.write(struct.pack('>H', sprite_height))  # vstart/hstart
-                outfile.write(struct.pack('>H', attach))  # vstop+control
                 outstr += "UWORD __chip sprdata%d[] = {\n" % sprite_num
                 outstr += "  0x%04x, 0x%04x,\n" % (sprite_height, attach)
 
                 num_rows = int(len(p0) / xparts)
                 for i in range(num_rows):
                     idx = i * xparts + xpos
-                    outfile.write(struct.pack('>H', p0[idx]))
-                    outfile.write(struct.pack('>H', p1[idx]))
                     outstr += "  0x%04x, 0x%04x,\n" % (p0[idx], p1[idx])
 
                 # end-of-data
-                outfile.write(struct.pack('>H', 0))
-                outfile.write(struct.pack('>H', 0))
                 outstr += "  0x0000, 0x0000\n"
                 outstr += "};\n\n"
 
@@ -189,10 +169,51 @@ def write_sprites(im, outpath, verbose, csource_path):
                 sprite_num += 1
             xpos += 1  # advance x position by 16 pixel in case the sprite is wide
 
-    # more of a control mechanism
-    if csource_path is not None:
-        with open(csource_path, 'w') as outfile:
+        with open(outpath, 'w') as outfile:
             outfile.write(outstr)
+    else:
+        header = SpriteInfoHeader(FILE_FORMAT_VERSION, 0, len(colors), num_sprites, imgdata_size)
+        with open(outpath, 'wb') as outfile:
+            header.write(outfile)
+
+            # 1. write sprite descriptors
+            for i in range(num_sprites):
+                # offset into the data, height * num planes * 2 bytes (16 pixels) + 8 bytes overhead
+                outfile.write(struct.pack(">H", i * (im.height * 4 + 8)))
+
+            # 2. write the palette entries used
+            for color in colors:
+                outfile.write(struct.pack(">H", (color & 0x0fff)))
+
+            # 3. write sprite data
+            sprite_num = 0
+            xpos = 0  # xpos if we have wide sprites
+            while xpos < xparts:
+                for write_planes in vbatches:
+                    p0 = write_planes[0]
+                    p1 = write_planes[1]
+
+                    if verbose:
+                        print("writing sprite number %d (height: %d, attach: %02x)" % (sprite_num, sprite_height, attach))
+                    # now write the sprite structures
+                    # The 2 start words, write the height in rows into the sprite
+                    # so the reader knows where the next sprite is
+                    outfile.write(struct.pack('>H', sprite_height))  # vstart/hstart
+                    outfile.write(struct.pack('>H', attach))  # vstop+control
+
+                    num_rows = int(len(p0) / xparts)
+                    for i in range(num_rows):
+                        idx = i * xparts + xpos
+                        outfile.write(struct.pack('>H', p0[idx]))
+                        outfile.write(struct.pack('>H', p1[idx]))
+
+                    # end-of-data
+                    outfile.write(struct.pack('>H', 0))
+                    outfile.write(struct.pack('>H', 0))
+
+                    # next sprite
+                    sprite_num += 1
+                xpos += 1  # advance x position by 16 pixel in case the sprite is wide
 
 
 def read_sprite_info(infile):

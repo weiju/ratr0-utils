@@ -15,10 +15,10 @@ if __name__ == '__main__':
                                      description=DESCRIPTION)
     parser.add_argument('pngfile', help="input PNG file")
     parser.add_argument('outfile', help="output sprite sheet file")
-    parser.add_argument('--csource', help='optionally output this C source file')
+    parser.add_argument('--generatec', help='generate a C source file instead of a sprite file', action='store_true')
     parser.add_argument('-v', '--verbose', action='store_true', help="run in verbose mode")
 
     args = parser.parse_args()
     im = Image.open(args.pngfile)
-    sprites.write_sprites(im, args.outfile, verbose=args.verbose, csource_path=args.csource)
+    sprites.write_sprites(im, args.outfile, verbose=args.verbose, generatec=args.generatec)
 
