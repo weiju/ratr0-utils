@@ -5,7 +5,7 @@ from setuptools import setup
 
 NAME = 'ratr0_utils'
 PACKAGES = ['ratr0.util']
-DESCRIPTION = 'ratr0-utils is a collection of utilties for game development using the RATR0 engine'
+DESCRIPTION = 'ratr0-utils is a collection of utilities for game development using the RATR0 engine'
 LICENSE = 'GPL V3'
 URI = 'https://github.com/weiju/ratr0-utils'
 AUTHOR = 'Wei-ju Wu'

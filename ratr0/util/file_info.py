@@ -16,7 +16,7 @@ def print_tiles_info(infile):
 
 def print_sprite_info(infile):
     sprite_info = sprites.read_sprite_info(infile)
-    print("RAT0 Sprite File")
+    print("RATR0 Sprite File")
     print(sprite_info)
     for i in range(sprite_info.num_sprites):
         spr_offset = int.from_bytes(infile.read(2), byteorder="big")

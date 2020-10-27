@@ -61,7 +61,6 @@ def interleave_planes(planes, map_words_per_row):
     """transforms a set of bitplanes into a large array of 16-bit
     word rows. each representing a line of an image
     """
-    print("INTERLEAVE !!!")
     # 1. for each plane generate a list of lists of <map_words_per_row>
     # values
     chunked = list([list(chunks(plane, map_words_per_row)) for plane in planes])

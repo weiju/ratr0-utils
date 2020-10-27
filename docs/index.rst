@@ -20,6 +20,8 @@ Amiga is supported) and therefore typically utilizes planar graphics and 8 bit s
 
    Installation <install>
    ratr0-maketiles <ratr0_maketiles>
+   ratr0-makesprites <ratr0_makesprites>
    ratr0-converttiled <ratr0_converttiled>
    Tiles File Format <tile_format>
    Level File Format <level_format>
+   Sprite File Format <sprite_format>

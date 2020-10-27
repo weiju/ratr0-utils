@@ -191,7 +191,7 @@ def write_tile_file(outfile, im, tile_size,
         # this changes colors from a list of triples into a flat list
         colors = [(((r >> 4) & 0x0f) << 8) | (((g >> 4) & 0x0f) << 4) | ((b >> 4) & 0x0f)
                   for r, g, b in colors]
-        print(['%03x' % c for c in colors])
+        #print(['%03x' % c for c in colors])
 
     palette_size = len(colors)
     depth = int(math.log2(palette_size))
