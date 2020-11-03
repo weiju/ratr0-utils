@@ -42,7 +42,7 @@ Parameters in detail
 
 ``ratr0-maketiles`` expects at least these 2 arguments:
 
-  * **pngfile:** This is the source image file.
+  * **pngfile:** This is the source image file in PNG format.
   * **outfile:** This file will be created by the conversion tool to store the tile set
     in RATR0 tiles format.
 

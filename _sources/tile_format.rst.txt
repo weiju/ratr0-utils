@@ -42,9 +42,8 @@ Byte number(s) Name         Description
 20-21          num_tiles_h  number of tiles in horizontal direction
 22-23          num_tiles_v  number of tiles in vertical direction
 24-25          palette_size number of color entries in the palette
-26-27          reserved2    reserved 16 bit, currently only padding
-28-31          imgdata_size size of image data in bytes
-32-35          checksum     checksum of the file (currently unused)
+26-29          imgdata_size size of image data in bytes
+30-31          checksum     checksum of the file (currently unused)
 ============== ============ ======================================================
 
 Palette Data

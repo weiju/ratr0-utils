@@ -1,43 +1,35 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>The ratr0-converttiled tool &#8212; ratr0-utils 0.1.0 documentation</title>
+    <meta charset="utf-8" />
+    <title>The ratr0-converttiled tool &#8212; ratr0-utils 0.1.3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="The Tiles File Format" href="tile_format.html" />
-    <link rel="prev" title="The ratr0-maketiles tool" href="ratr0_maketiles.html" />
+    <link rel="prev" title="The ratr0-makesprites tool" href="ratr0_makesprites.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="the-ratr0-converttiled-tool">
@@ -45,11 +37,11 @@
 <p><a class="reference external" href="http://www.mapeditor.org/">Tiled</a> is a powerful and popular open source level
 editor. Rather than implementing its own level editor, the RATR0 engine relies
 on Tiled to provide this critital functionality.</p>
-<p>The <code class="docutils literal"><span class="pre">ratr0-converttiled</span></code> utility can be used to convert Tiled’s JSON format
+<p>The <code class="docutils literal notranslate"><span class="pre">ratr0-converttiled</span></code> utility can be used to convert Tiled’s JSON format
 to into RATR0’s level and tile file formats</p>
-<p>You can see the tool’s available options when you enter <code class="docutils literal"><span class="pre">ratr0-converttiled</span> <span class="pre">-h</span></code>
+<p>You can see the tool’s available options when you enter <code class="docutils literal notranslate"><span class="pre">ratr0-converttiled</span> <span class="pre">-h</span></code>
 at the command prompt:</p>
-<div class="highlight-none"><div class="highlight"><pre><span></span>usage: ratr0-converttiled [-h] [-ni] [-p24] [-fd FORCE_DEPTH] [-v]
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>usage: ratr0-converttiled [-h] [-ni] [-p24] [-fd FORCE_DEPTH] [-v]
                           tiles_json level_json tileout levelout
 
 convert_tiled.py - TilED Conversion tool
@@ -75,30 +67,30 @@ optional arguments:
 </div>
 <div class="section" id="parameters-in-detail">
 <h2>Parameters in detail<a class="headerlink" href="#parameters-in-detail" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal"><span class="pre">ratr0-converttiled</span></code> expects at least these 4 arguments:</p>
+<p><code class="docutils literal notranslate"><span class="pre">ratr0-converttiled</span></code> expects at least these 4 arguments:</p>
 <blockquote>
 <div><ul class="simple">
-<li><strong>tiles_json:</strong> This is the file that Tiled uses to store a tile set. Please note
+<li><p><strong>tiles_json:</strong> This is the file that Tiled uses to store a tile set. Please note
 that this file also includes a reference to the image file the tile set is based
-on, so that image file needs to be in the same place that Tiled would expect it</li>
-<li><strong>level_json:</strong> This is the file that Tiled uses to store a level.</li>
-<li><strong>tileout:</strong> This file will be created by the conversion tool to store the tile set
-in RATR0 tiles format.</li>
-<li><strong>levelout:</strong> This file will be created by the conversion tool to store the level data
-in RATR0 level format</li>
+on, so that image file needs to be in the same place that Tiled would expect it</p></li>
+<li><p><strong>level_json:</strong> This is the file that Tiled uses to store a level.</p></li>
+<li><p><strong>tileout:</strong> This file will be created by the conversion tool to store the tile set
+in RATR0 tiles format.</p></li>
+<li><p><strong>levelout:</strong> This file will be created by the conversion tool to store the level data
+in RATR0 level format</p></li>
 </ul>
 </div></blockquote>
 <p>In addition, you can specify the following optional arguments:</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">--non-interleaved</span></code> or <code class="docutils literal"><span class="pre">--ni</span></code>: the tile set’s image information will be stored
-as non-interleaved bitplanes rather than interleaved bitplanes</li>
-<li><code class="docutils literal"><span class="pre">--palette24</span></code> or <code class="docutils literal"><span class="pre">-p24</span></code>: The palette’s color entries will be saved as 24 bit
+<li><p><code class="docutils literal notranslate"><span class="pre">--non-interleaved</span></code> or <code class="docutils literal notranslate"><span class="pre">--ni</span></code>: the tile set’s image information will be stored
+as non-interleaved bitplanes rather than interleaved bitplanes</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--palette24</span></code> or <code class="docutils literal notranslate"><span class="pre">-p24</span></code>: The palette’s color entries will be saved as 24 bit
 information (r, g, b triplets with a size of 8 bit each). By default, color entries
-are of size 16 bit that encodes a 12 bit color triplet, 4 bit for each color component</li>
-<li><code class="docutils literal"><span class="pre">--force-depth</span></code> or <code class="docutils literal"><span class="pre">-fd</span></code>: This argument takes an additional parameter that specifies
+are of size 16 bit that encodes a 12 bit color triplet, 4 bit for each color component</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--force-depth</span></code> or <code class="docutils literal notranslate"><span class="pre">-fd</span></code>: This argument takes an additional parameter that specifies
 the actual number of bitplanes that will be generated in the tiles file. By this means
-you can force the converter into generating more bitplanes if the program requires it</li>
+you can force the converter into generating more bitplanes if the program requires it</p></li>
 </ul>
 </div></blockquote>
 </div>
@@ -106,6 +98,7 @@ you can force the converter into generating more bitplanes if the program requir
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -133,43 +126,53 @@ you can force the converter into generating more bitplanes if the program requir
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ratr0_maketiles.html">ratr0-maketiles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ratr0_makesprites.html">ratr0-makesprites</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ratr0-converttiled</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#parameters-in-detail">Parameters in detail</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tile_format.html">Tiles File Format</a></li>
 <li class="toctree-l1"><a class="reference internal" href="level_format.html">Level File Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sprite_format.html">Sprite File Format</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="ratr0_maketiles.html" title="previous chapter">The ratr0-maketiles tool</a></li>
+      <li>Previous: <a href="ratr0_makesprites.html" title="previous chapter">The ratr0-makesprites tool</a></li>
       <li>Next: <a href="tile_format.html" title="next chapter">The Tiles File Format</a></li>
   </ul></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2017, Wei-ju Wu.
+      &copy;2017-2020, Wei-ju Wu.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.4</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/ratr0_converttiled.rst.txt"
