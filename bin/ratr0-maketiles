@@ -24,6 +24,8 @@ if __name__ == '__main__':
                         help="set depth to a value greater or equal the input image's value")
     parser.add_argument('-mf', '--mask_file', default=None,
                         help="generate optional 1 bit mask file")
+    parser.add_argument('-cm', '--create_mask', action='store_true',
+                        help="add a mask plane to the image data")
     parser.add_argument('-v', '--verbose', action='store_true', help="run in verbose mode")
 
     args = parser.parse_args()
@@ -36,11 +38,11 @@ if __name__ == '__main__':
     tiles.write_tiles(im, args.outfile, tile_size, colors,
                       palette24=args.palette24,
                       non_interleaved=args.non_interleaved,
+                      create_mask=args.create_mask,
                       verbose=args.verbose)
 
     if args.mask_file is not None:
-        tiles.write_mask(args.mask_file, im, tile_size,
-                         int(math.log2(len(colors))),
+        tiles.write_mask(args.mask_file, im, tile_size, 1,
                          palette24=args.palette24,
                          non_interleaved=args.non_interleaved,
                          verbose=args.verbose)

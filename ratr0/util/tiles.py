@@ -15,6 +15,8 @@ bit 1: not set -> palette entry RGB components are 4 bit, encoded in 16 bit word
        set -> palette entries are 24 bit
 bit 2: not set -> interleaved format
        set -> non-interleaved
+bit 3: not set -> no mask
+       set -> contains mask plane
 
 Header (32 bytes)
 
@@ -77,15 +79,14 @@ class TilesInfo:
             rgb_format = 24
         else:
             rgb_format = 12
-        if self.flags & 0x04 == 4:
-            interleaved = False
-        else:
-            interleaved = True
+        interleaved = self.flags & 0x04 == 4
+        contains_mask = self.flags & 0x08 == 8
 
         out = "Version: %d\n" % self.version
         out += "Endianess: %s\n" % byte_order
         out += "RGB Format: %d\n" % rgb_format
         out += "Interleaved: %s\n" % str(interleaved)
+        out += "Contains Mask: %s\n" % str(contains_mask)
         out += "width: %d, height: %d\n" % (self.width, self.height)
         out += "# bitplanes: %d\n" % self.depth
         out += "tile size: %dx%d\n" % (self.tile_size_h, self.tile_size_v)
@@ -171,18 +172,20 @@ def read_tiles_info(infile):
                      palette)
 
 
-def write_tiles(im, outfile, tile_size, colors, palette24, non_interleaved, verbose):
+def write_tiles(im, outfile, tile_size, colors, palette24,
+                non_interleaved, create_mask, verbose):
     """write tile file using the specifications"""
     depth = int(math.log2(len(colors)))
     planes, map_words_per_row = png_util.extract_planes(im, depth, verbose)
     write_tile_file(outfile, im, tile_size, planes, colors, map_words_per_row,
-                    palette24, non_interleaved, verbose)
+                    palette24, non_interleaved, create_mask, verbose)
 
 
 def write_tile_file(outfile, im, tile_size,
                     planes, colors, map_words_per_row,
-                    palette24, non_interleaved, verbose):
+                    palette24, non_interleaved, create_mask, verbose):
     checksum = 0  # TODO: add adler-32
+    mask_depth = 0
     flags = 4 if non_interleaved else 0
     if palette24:
         flags |= 2
@@ -192,14 +195,27 @@ def write_tile_file(outfile, im, tile_size,
         colors = [(((r >> 4) & 0x0f) << 8) | (((g >> 4) & 0x0f) << 4) | ((b >> 4) & 0x0f)
                   for r, g, b in colors]
         #print(['%03x' % c for c in colors])
+    if create_mask:
+        flags |= 8
+        mask_depth = 1
 
     palette_size = len(colors)
     depth = int(math.log2(palette_size))
-    imgdata_size = map_words_per_row * 2 * im.height * depth
+    imgdata_size = map_words_per_row * 2 * im.height * (depth + mask_depth)
     tile_sheet_dim = (int(im.width / tile_size[0]), int(im.height / tile_size[1]))
     if verbose:
         print('tile size h: %d v: %d' % (tile_size[0], tile_size[1]))
         print('tile sheet width: %d height: %d' % (tile_sheet_dim[0], tile_sheet_dim[1]))
+
+    # add an additional plane that merges down the 1 bits of the planes list
+    if create_mask:
+        mask_plane = [0] * len(planes[0])
+        for i in range(len(mask_plane)):
+            w = 0
+            for plane in planes:
+                w |= plane[i]
+            mask_plane[i] = w
+        planes.append(mask_plane)
 
     with open(outfile, 'wb') as out:
         tiles_info = TilesInfo(FILE_FORMAT_VERSION, flags,
@@ -231,14 +247,11 @@ def write_mask(outfile, im, tile_size, depth,
     mask_img = Image.new(mode="1", size=im.size)
     mask_img.putdata(colors)
 
-    # workaround to fix a strange bug when calling write_files()
-    # is called directly, so we save it as a PNG first and
-    # call write_tiles() on the PNG file
+    # write a debug PNG file as visual control
+    mask_img.save(outfile)
+    """
     mask_img.save("tmp_mask.png")
-    mask_img = Image.open('tmp_mask.png')
+    #mask_img = Image.open('tmp_mask.png')
     mask_colors = png_util.make_colors(mask_img, depth, verbose)
-
-    # Essentially write an image with the same depth as the source image
-    # containing all the planes
     write_tiles(mask_img, outfile, tile_size, mask_colors,
-                palette24=palette24, non_interleaved=non_interleaved, verbose=verbose)
+                palette24=palette24, non_interleaved=non_interleaved, verbose=verbose)"""

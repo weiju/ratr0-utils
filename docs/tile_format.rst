@@ -33,6 +33,7 @@ Byte number(s) Name         Description
 9              flags        | bit 0: not set -> big endian, set -> little endian
                             | bit 1: not set -> 12 bit RGB, set -> 24 bit RGB
                             | bit 2: not set -> interleaved, set -> non-interleaved
+                            | bit 3: not set -> no mask, set -> contains mask plane
 10             reserved1    reserved byte, currently only used as padding
 11             depth        image depth in number of bits
 12-13          width        image width in pixels
@@ -60,4 +61,5 @@ Image Data
 
 Immediately following the palette data is the image data encoding as
 *depth* planes. This data is of the size *((width * height * depth) / 8)* bytes.
-
+If bit 3 of flags is set, there will be an additional plane containing the
+mask data, which is a bitwise "OR" of all the image bit planes

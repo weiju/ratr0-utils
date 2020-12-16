@@ -34,7 +34,8 @@ at the command prompt:
                             set depth to a value greater or equal the input
                             image's value
       -mf MASK_FILE, --mask_file MASK_FILE
-                            generate optional 1 bit mask file
+                            writes a preview mask file in PNG format
+      -cm, --create_mask    add a mask plane to the image data
       -v, --verbose         run in verbose mode
 
 Parameters in detail
@@ -60,7 +61,8 @@ In addition, you can specify the following optional arguments:
   * ``--force-depth`` or ``-fd``: This argument takes an additional parameter that specifies
     the actual number of bitplanes that will be generated in the tiles file. By this means
     you can force the converter into generating more bitplanes if the program requires it
-  * ``--mask_file`` or ``-mf``: This takes an additional parameter which is a path to another
-    tiles file, a so-called **mask file** to be generated. A mask file defines a bit mask
-    (a single bitplane that is the entirety of all bits set in all bitplanes in the source
-    image) that helps performing transparent blits using the Amiga Blitter.
+  * ``--create_mask`` or ``-cm``: Create an additional bit plane containing the bitwise "OR"
+    of all the image bit planes. This mask plane can be used for Amiga Blitter operations
+    with the "cookie cut", which allows for blits that treat color 0 as transparent.
+  * ``--mask_file`` or ``-mf``: Writes a PNG file ``MASK_FILE`` that can be used to get an
+    idea how the mask plane generated with ``--create_mask`` would look like.

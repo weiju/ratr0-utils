@@ -1,6 +1,13 @@
 Changes
 =======
 
+Version 0.1.4, 2020/12/17
+-------------------------
+
+  - create_mask parameter added
+  - mask data is now part of the output file
+  - mask_file now only creates a preview
+
 Version 0.1.3, 2020/09/08
 -------------------------
 
