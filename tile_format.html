@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>The Tiles File Format &#8212; ratr0-utils 0.1.3 documentation</title>
+    <title>The Tiles File Format &#8212; ratr0-utils 0.1.4 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -80,6 +80,7 @@ of platforms and graphics technologies.</p>
 <div class="line">bit 0: not set -&gt; big endian, set -&gt; little endian</div>
 <div class="line">bit 1: not set -&gt; 12 bit RGB, set -&gt; 24 bit RGB</div>
 <div class="line">bit 2: not set -&gt; interleaved, set -&gt; non-interleaved</div>
+<div class="line">bit 3: not set -&gt; no mask, set -&gt; contains mask plane</div>
 </div>
 </td>
 </tr>
@@ -141,7 +142,9 @@ triplets per color (24 bit) the size of the block will be
 <div class="section" id="image-data">
 <h3>Image Data<a class="headerlink" href="#image-data" title="Permalink to this headline">¶</a></h3>
 <p>Immediately following the palette data is the image data encoding as
-<em>depth</em> planes. This data is of the size <em>((width * height * depth) / 8)</em> bytes.</p>
+<em>depth</em> planes. This data is of the size <em>((width * height * depth) / 8)</em> bytes.
+If bit 3 of flags is set, there will be an additional plane containing the
+mask data, which is a bitwise “OR” of all the image bit planes</p>
 </div>
 </div>
 </div>
