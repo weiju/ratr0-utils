@@ -12,7 +12,7 @@ at the command prompt:
 ::
 
     usage: ratr0-maketiles [-h] [-ts TILE_SIZE] [-ni] [-p24] [-fd FORCE_DEPTH]
-                           [-mf MASK_FILE] [-v]
+                           [-mf MASK_FILE] [-cm] [-v]
                            pngfile outfile
 
     make_tiles.py - Amiga Image Converter
