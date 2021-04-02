@@ -79,7 +79,7 @@ class TilesInfo:
             rgb_format = 24
         else:
             rgb_format = 12
-        interleaved = self.flags & 0x04 == 4
+        interleaved = self.flags & 0x04 == 0
         contains_mask = self.flags & 0x08 == 8
 
         out = "Version: %d\n" % self.version
@@ -135,10 +135,6 @@ def read_tiles_info(infile):
         rgb_format = 24
     else:
         rgb_format = 12
-    if flags & 0x04 == 4:
-        interleaved = False
-    else:
-        interleaved = True
 
     reserved1 = infile.read(1)
     depth = ord(infile.read(1))
