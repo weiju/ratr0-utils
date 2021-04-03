@@ -23,7 +23,7 @@ if __name__ == '__main__':
     parser.add_argument('-fd', '--force_depth', type=int, default=None,
                         help="set depth to a value greater or equal the input image's value")
     parser.add_argument('-mf', '--mask_file', default=None,
-                        help="generate optional 1 bit mask file")
+                        help="generate optional 1 bit mask file (PNG format) as a visual debugging control")
     parser.add_argument('-cm', '--create_mask', action='store_true',
                         help="add a mask plane to the image data")
     parser.add_argument('-v', '--verbose', action='store_true', help="run in verbose mode")

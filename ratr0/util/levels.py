@@ -24,7 +24,7 @@ init_vp_col    byte 20-21 initial column position for viewport
 reserved       byte 22-23 reserved, currently only padding
 checksum       byte 24-27 checksum of the entire file
 
-level_data     <width * height pairs of words  (tile_i, tile_j)>
+level_data     <width * height bytes> tile numbers, 1-based
 
 Note:
 
@@ -40,30 +40,13 @@ def write_level(level, outfile, verbose):
     with open(outfile, 'wb') as out:
         out.write(b'RATR0LVL')
         out.write(bytes([1, 0]))
-        height = len(level['map'])
-        width = len(level['map'][0])
+        height = level['height']
+        width = level['width']
         checksum = 0
 
-        # check if all rows have the same width
-        for i, row in enumerate(level['map']):
-            if len(row) != width:
-                raise Exception('width of row %d != %d (actual width: %d)' % (i, width, len(row)))
         out.write(struct.pack(">H", width))
         out.write(struct.pack(">H", height))
-        out.write(struct.pack(">H", level['viewport']['width']))
-        out.write(struct.pack(">H", level['viewport']['height']))
-        out.write(struct.pack(">H", level['viewport']['y']))
-        out.write(struct.pack(">H", level['viewport']['x']))
-        out.write(struct.pack(">H", 0))  # reserved (padding)
+        out.write(struct.pack(">H", checksum))
 
-        out.write(struct.pack(">I", checksum))
-        for i, row in enumerate(level['map']):
-            for j, cell in enumerate(row):
-                if len(cell) == 2:
-                    tile_i, tile_j = cell
-                    out.write(struct.pack(">H", tile_i))
-                    out.write(struct.pack(">H", tile_j))
-                else:
-                    # this is a null cell
-                    out.write(struct.pack(">H", 0xffff))
-                    out.write(struct.pack(">H", 0xffff))
+        for tile_num in level['map']:
+            out.write(struct.pack("B", tile_num))

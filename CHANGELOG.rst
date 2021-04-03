@@ -1,6 +1,12 @@
 Changes
 =======
 
+Version 0.1.6, 2021/04/05
+-------------------------
+
+  - ratr0-file: fixed interleaved info
+  - ratr0-converttiled: changed file format
+
 Version 0.1.5, 2021/01/04
 -------------------------
 

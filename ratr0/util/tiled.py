@@ -26,18 +26,12 @@ def convert_tiles(intiles, indir, outfile, non_interleaved,
                       verbose=verbose)
 
 
-def chunks(l, k):
-    for i in range(0, len(l), k):
-        yield l[i: i + k]
-
-
-def convert_level(inlevel, id2pos_map, outfile, verbose):
+def convert_level(inlevel, outfile, verbose):
     if len(inlevel["layers"]) > 1:
         print("Warning: currently only a single layer is supported")
     inmap = inlevel["layers"][0]
     inmap_data = inmap["data"]
-    rows = map(lambda r: map(lambda i: id2pos_map[i], r), chunks(inmap_data, inmap["width"]))
-    rows = list([list(row) for row in rows])
+
     ratr0_level = {
         "name": "level",
         "viewport": {
@@ -45,15 +39,8 @@ def convert_level(inlevel, id2pos_map, outfile, verbose):
             "width": inmap["width"],
             "height": inmap["height"]
         },
-        "map":  rows
+        "width": inlevel['width'],
+        "height": inlevel['height'],
+        "map": inmap_data
     }
     levels.write_level(ratr0_level, outfile, verbose)
-
-def make_id2pos_map(intiles):
-    columns = intiles["columns"]
-    tile_count = intiles["tilecount"]
-    tile_width = intiles["tilewidth"]
-    tile_height = intiles["tileheight"]
-    rows = int(tile_count / columns)
-    # (RATR0 levels require (x, y) pairs)
-    return { i + 1: (i % columns, int(i / columns)) for i in range(tile_count)}

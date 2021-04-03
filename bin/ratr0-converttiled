@@ -35,6 +35,4 @@ if __name__ == '__main__':
 
     with open(args.level_json) as infile:
         inlevel = json.load(infile)
-        tiled.convert_level(inlevel,
-                            tiled.make_id2pos_map(intiles),
-                            args.levelout, args.verbose)
+        tiled.convert_level(inlevel, args.levelout, args.verbose)

@@ -25,16 +25,11 @@ def print_sprite_info(infile):
 
 class LevelInfo:
 
-    def __init__(self, version, flags, width, height, vp_width, vp_height,
-                 init_vp_row, init_vp_col):
+    def __init__(self, version, flags, width, height):
         self.version = version
         self.flags = flags
         self.width = width
         self.height = height
-        self.vp_width = vp_width
-        self.vp_height = vp_height
-        self.init_vp_row = init_vp_row
-        self.init_vp_col = init_vp_col
 
     def __str__(self):
         if self.flags & 0x01 == 1:
@@ -47,10 +42,7 @@ class LevelInfo:
         out = "Version: %d\n" % self.version
         out += "Endianess: %s\n" % byte_order
         out += "size: %dx%d tiles\n" % (self.width, self.height)
-        out += "viewport size: %dx%d tiles\n" % (self.vp_width, self.vp_height)
-        out += "initial viewport pos: (%d, %d)\n" % (self.init_vp_col, self.init_vp_row)
         return out
-
 
 
 def read_level_info(infile):
@@ -66,12 +58,7 @@ def read_level_info(infile):
 
     width = int.from_bytes(infile.read(2), byteorder=byte_order)
     height = int.from_bytes(infile.read(2), byteorder=byte_order)
-    vp_width = int.from_bytes(infile.read(2), byteorder=byte_order)
-    vp_height = int.from_bytes(infile.read(2), byteorder=byte_order)
-    init_vp_row = int.from_bytes(infile.read(2), byteorder=byte_order)
-    init_vp_col = int.from_bytes(infile.read(2), byteorder=byte_order)
-    return LevelInfo(version, flags, width, height, vp_width, vp_height, init_vp_row,
-                     init_vp_col)
+    return LevelInfo(version, flags, width, height)
 
 
 def print_level_info(infile):
