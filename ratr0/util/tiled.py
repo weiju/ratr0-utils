@@ -9,7 +9,7 @@ import json
 import os
 from PIL import Image
 
-from ratr0.util import tiles, levels
+from ratr0.util import tiles, levels, png_util
 
 
 def convert_tiles(intiles, indir, outfile, non_interleaved,
@@ -18,11 +18,12 @@ def convert_tiles(intiles, indir, outfile, non_interleaved,
     tile_width = intiles['tilewidth']
     tile_height = intiles['tileheight']
     im = Image.open(imagepath)
-    colors = tiles.make_colors(im, force_depth, verbose)
+    colors = png_util.make_colors(im, force_depth, verbose)
     tiles.write_tiles(im, outfile, [tile_width, tile_height], colors,
                       palette24=palette24,
-                      force_depth=force_depth,
-                      non_interleaved=non_interleaved, verbose=verbose)
+                      non_interleaved=non_interleaved,
+                      create_mask=False,
+                      verbose=verbose)
 
 
 def chunks(l, k):
