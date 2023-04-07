@@ -168,6 +168,31 @@ def read_tiles_info(infile):
                      palette)
 
 
+def write_planes_to_c(im, outfile, colors, non_interleaved, verbose, indent=4):
+    """write tile file using the specifications"""
+    depth = int(math.log2(len(colors)))
+    planes, map_words_per_row = png_util.extract_planes(im, depth, verbose)
+    print("#Planes: %d map words per row: %d" % (len(planes), map_words_per_row))
+    with open(outfile, 'w') as out:
+        out.write("UINT16 data[] = {\n")
+        out_data = []
+        if non_interleaved:
+            for plane in planes:
+                for word in plane:
+                    out_data.append("0x%04x" % word)
+        else:
+            interleaved_data = png_util.interleave_planes(planes, map_words_per_row)
+            for row in interleaved_data:
+                for word in row:
+                    out_data.append("0x%04x" % word)
+        out_rows = png_util.chunks(out_data, map_words_per_row)
+        for row in out_rows:
+            out.write(" " * indent)
+            out.write(", ".join(row))
+            out.write(",\n")
+        out.write("\n};\n")
+
+
 def write_tiles(im, outfile, tile_size, colors, palette24,
                 non_interleaved, create_mask, verbose):
     """write tile file using the specifications"""

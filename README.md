@@ -24,3 +24,9 @@ python3 setup.py sdist bdist_wheel
 ## Uploading to pypi
 
 twine upload -r pypi dist/ratr0_utils-<version>*
+
+## Known pitfalls
+
+Image conversion can fail when the PNG is not in indexed format.
+Modern image editors often save PNG in 24bit format, so make sure
+that the PNG is in the format you need

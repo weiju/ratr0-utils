@@ -53,6 +53,7 @@ if __name__ == '__main__':
           scripts=['bin/ratr0-maketiles',
                    'bin/ratr0-makesprites',
                    'bin/ratr0-makelevel',
+                   'bin/ratr0-makeplanes',
                    'bin/ratr0-converttiled',
                    'bin/ratr0-file',
                    'bin/ratr0-wav2raw8'])
