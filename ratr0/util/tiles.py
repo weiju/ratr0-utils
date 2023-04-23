@@ -264,15 +264,23 @@ def setornot(v):
 def write_mask(outfile, im, tile_size, depth,
                palette24,
                non_interleaved, verbose):
-    colors = [setornot(c) for c in im.getdata()]
-    mask_img = Image.new(mode="1", size=im.size)
-    mask_img.putdata(colors)
-
-    # write a debug PNG file as visual control
-    mask_img.save(outfile)
-    """
-    mask_img.save("tmp_mask.png")
-    #mask_img = Image.open('tmp_mask.png')
-    mask_colors = png_util.make_colors(mask_img, depth, verbose)
-    write_tiles(mask_img, outfile, tile_size, mask_colors,
-                palette24=palette24, non_interleaved=non_interleaved, verbose=verbose)"""
+    """Write a preview mask in png format, as a quick visual control"""
+    # Non-interleaved: just write one bitplane at the end
+    if non_interleaved:
+        colors = [setornot(c) for c in im.getdata()]
+        mask_img = Image.new(mode="1", size=im.size)
+        mask_img.putdata(colors)
+        # write a debug PNG file as visual control
+        mask_img.save(outfile)
+    else:
+        # interleaved: duplicate each row times the depth
+        colors = [setornot(c) for c in im.getdata()]
+        color_rows = list(png_util.chunks(colors, im.width))
+        final_colors = []
+        for row in color_rows:
+            new_row = row * depth
+            final_colors.extend(row * depth)
+        mask_img = Image.new(mode="1", size=(im.width, im.height * depth))
+        mask_img.putdata(final_colors)
+        # write a debug PNG file as visual control
+        mask_img.save(outfile)

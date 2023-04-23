@@ -42,7 +42,8 @@ if __name__ == '__main__':
                       verbose=args.verbose)
 
     if args.mask_file is not None:
-        tiles.write_mask(args.mask_file, im, tile_size, 1,
+        depth = int(math.log2(len(colors)))
+        tiles.write_mask(args.mask_file, im, tile_size, depth,
                          palette24=args.palette24,
                          non_interleaved=args.non_interleaved,
                          verbose=args.verbose)
