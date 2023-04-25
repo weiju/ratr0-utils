@@ -216,12 +216,16 @@ def write_tile_file(outfile, im, tile_size,
         colors = [(((r >> 4) & 0x0f) << 8) | (((g >> 4) & 0x0f) << 4) | ((b >> 4) & 0x0f)
                   for r, g, b in colors]
         #print(['%03x' % c for c in colors])
-    if create_mask:
-        flags |= 8
-        mask_depth = 1
 
     palette_size = len(colors)
     depth = int(math.log2(palette_size))
+
+    if create_mask:
+        flags |= 8
+        # if interleaved, mask depth is same as image depth
+        mask_depth = 1 if non_interleaved else depth
+
+
     imgdata_size = map_words_per_row * 2 * im.height * (depth + mask_depth)
     tile_sheet_dim = (int(im.width / tile_size[0]), int(im.height / tile_size[1]))
     if verbose:
@@ -236,7 +240,6 @@ def write_tile_file(outfile, im, tile_size,
             for plane in planes:
                 w |= plane[i]
             mask_plane[i] = w
-        planes.append(mask_plane)
 
     with open(outfile, 'wb') as out:
         tiles_info = TilesInfo(FILE_FORMAT_VERSION, flags,
@@ -247,6 +250,7 @@ def write_tile_file(outfile, im, tile_size,
                                colors)
         tiles_info.write(out)
         if non_interleaved:
+            planes.append(mask_plane)
             for plane in planes:
                 for word in plane:
                     out.write(struct.pack(">H", word))
@@ -255,6 +259,14 @@ def write_tile_file(outfile, im, tile_size,
             for row in interleaved_data:
                 for word in row:
                     out.write(struct.pack(">H", word))
+            if create_mask:
+                # interleaved mask
+                # we need to multiply the mask plane data
+                mask_planes = [mask_plane for i in range(depth)]
+                interleaved_mask = png_util.interleave_planes(mask_planes, map_words_per_row)
+                for row in interleaved_mask:
+                    for word in row:
+                        out.write(struct.pack(">H", word))
 
 
 def setornot(v):

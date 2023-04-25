@@ -1,10 +1,11 @@
 Changes
 =======
 
-Version 0.1.7, 2023/04/07
+Version 0.1.7, 2023/04/25
 -------------------------
 
   - ratr0-makeplanes added
+  - ratr0-maketiles can create interleaved masks
 
 Version 0.1.6, 2021/04/05
 -------------------------
