@@ -4,7 +4,7 @@ sprites in series in the same data structur format as the Amiga hardware expects
 Therefore the data for a sprite is always 16 pixel wide.
 
 
-A tile sheet file has this format:
+A sprite sheet file has this format:
 flags:
 
 bit 0: not set -> big endian, set -> little endian
@@ -78,8 +78,11 @@ class SpriteInfoHeader:
         return out
 
 
-
 def write_sprites(im, outpath, verbose, generatec):
+    """
+    This function expects sprites to be layed out in a single row that has a width
+    of a multiple of 16
+    """
     colors = png_util.make_colors(im, None, verbose)
     depth = int(math.log2(len(colors)))
     colors = [(((r >> 4) & 0x0f) << 8) | (((g >> 4) & 0x0f) << 4) | ((b >> 4) & 0x0f)
@@ -133,7 +136,7 @@ def write_sprites(im, outpath, verbose, generatec):
     else:  # 4 planes
         vbatches = [planes[:2], planes[2:]]
     xparts = int(im.width / 16)
-    sprite_height = len(vbatches[0][0])
+    sprite_height = im.height
 
     if generatec:
         outstr = ""  # for generating C source code
@@ -198,8 +201,8 @@ def write_sprites(im, outpath, verbose, generatec):
                     # now write the sprite structures
                     # The 2 start words, write the height in rows into the sprite
                     # so the reader knows where the next sprite is
-                    outfile.write(struct.pack('>H', sprite_height))  # vstart/hstart
-                    outfile.write(struct.pack('>H', attach))  # vstop+control
+                    outfile.write(struct.pack('>H', sprite_height))  # vstart/hstart word, but in file stores height
+                    outfile.write(struct.pack('>H', attach))  # vstop+control, but in file it stores attachment bit
 
                     num_rows = int(len(p0) / xparts)
                     for i in range(num_rows):

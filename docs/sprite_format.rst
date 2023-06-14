@@ -48,8 +48,7 @@ Sprite Data
 ~~~~~~~~~~~
 
 Immediately following the palette data is the sprite data. The data is in the same
-format as the Amiga sprite structure: The first 2 words will contain the sprite's
-height,
+format as the Amiga sprite structure:
 
 ============== ======================================================
 Word number(s) Description

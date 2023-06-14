@@ -21,6 +21,11 @@ def print_sprite_info(infile):
     for i in range(sprite_info.num_sprites):
         spr_offset = int.from_bytes(infile.read(2), byteorder="big")
         print("Sprite %d, offset: %d" % (i, spr_offset))
+    for i in range(sprite_info.num_colors):
+        color = int.from_bytes(infile.read(2), byteorder="big")
+        print("color %d: %04x" % (i, color))
+    sprctrl0 = int.from_bytes(infile.read(2), byteorder="big")
+    print("first sprite height: %d" % sprctrl0)
 
 
 class LevelInfo:
