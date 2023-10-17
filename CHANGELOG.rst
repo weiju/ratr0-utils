@@ -1,6 +1,12 @@
 Changes
 =======
 
+Version 0.1.8, 2023/06/14
+-------------------------
+
+  - fix: ratr0-makesprites stores correct height now
+  - ratr0-fileinfo shows sprite 0 height
+
 Version 0.1.7, 2023/04/25
 -------------------------
 
