@@ -1,5 +1,7 @@
 # ratr0-utils - Utility collection for the RATR0 Engine
 
+![Packaging](https://github.com/weiju/ratr0-utils/actions/workflows/python-package.yml/badge.svg)
+
 ## Description
 
 This is a collection of utilities to convert common multimedia
