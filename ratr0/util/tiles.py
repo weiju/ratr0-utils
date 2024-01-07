@@ -250,7 +250,8 @@ def write_tile_file(outfile, im, tile_size,
                                colors)
         tiles_info.write(out)
         if non_interleaved:
-            planes.append(mask_plane)
+            if create_mask:
+                planes.append(mask_plane)
             for plane in planes:
                 for word in plane:
                     out.write(struct.pack(">H", word))
