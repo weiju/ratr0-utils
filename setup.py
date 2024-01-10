@@ -1,6 +1,7 @@
 import os
 import re
 import codecs
+from pathlib import Path
 from setuptools import setup
 
 NAME = 'ratr0_utils'
@@ -33,10 +34,15 @@ INSTALL_REQUIRES = ['pillow']
 
 PACKAGE_DATA = {
     'ratr0.util': []
-    }
+}
+
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 if __name__ == '__main__':
     setup(name=NAME, description=DESCRIPTION,
+          long_description=long_description,
+          long_description_content_type='text/markdown',
           license=LICENSE,
           url=URI,
           version=VERSION,
