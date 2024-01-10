@@ -1,6 +1,12 @@
 Changes
 =======
 
+Version 0.1.9, 2024/01/10
+-------------------------
+
+  - fix: ratr0-maketiles: could not convert interleaved images
+    (Thank you TonyRamirezM)
+
 Version 0.1.8, 2023/06/14
 -------------------------
 
