@@ -1,0 +1,36 @@
+The ratr0-makecoplist tool
+==========================
+
+This utility takes a file representing a textual Amiga Copper list
+description and generates a C source file and accompanying header file.
+
+You can see the tool's available options when you enter ``ratr0-makecoplist -h``
+at the command prompt:
+
+.. highlight:: none
+
+::
+
+    usage: ratr0-makecoplist [-h] [--listname LISTNAME] infile outfile
+
+    ratr0-makecoplist - RATR0 copper list compiler
+
+    This tool turns a textual Copper list description into a
+    byte array in C.
+
+    positional arguments:
+      infile         input copper list file
+      outfile        output C source file
+
+    optional arguments:
+      -h, --help     show this help message and exit
+      --listname     unique name of copper list within your project
+
+
+Parameters in detail
+--------------------
+
+``ratr0-makecoplist`` expects at least these 2 arguments:
+
+  * **infile:** This is the source copper list file.
+  * **outfile:** This file will be created by the conversion tool to represent the copper list as a C source file.
