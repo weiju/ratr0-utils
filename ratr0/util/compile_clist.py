@@ -83,32 +83,37 @@ def compile_clist(inpath):
                 result.extend([0xffff, 0xfffe])
             elif comps[0].endswith(":"):
                 label = comps[0][:-1]
-                indexes[label] = list_index
+                # the label points to the value, so we need to add 1
+                indexes[label] = list_index + 1
             else:
                 raise Exception("can't recognize instruction: '%s'" % comps[0])
     return result, indexes
 
 
-def write_clist(clist, indexes, outfile):
+def write_clist(clist, indexes, outfile, clist_name="default_copper"):
     src_file = os.path.basename(outfile)
     print("Writing %s" % src_file)
     header_file = src_file.replace(".c", ".h")
     parent_dir = os.path.dirname(outfile)
     print("Header %s" % os.path.join(parent_dir, header_file))
+    header_name = clist_name.upper()
 
     with open(os.path.join(parent_dir, header_file), "w") as out:
         out.write("#pragma once\n")
-        out.write("#ifndef __COPPER__\n")
-        out.write("#define __COPPER__\n")
+        out.write("#ifndef __%s__\n" % header_name)
+        out.write("#define __%s__\n" % header_name)
 
         for label, index in indexes.items():
             out.write("#define %s (%d)\n" % (label, index))
+        out.write("\n#define %s_SIZE_WORDS (%d)\n" % (header_name, len(clist)))
+        out.write("#define %s_SIZE_BYTES (%d)\n" % (header_name, len(clist) * 2))
+        out.write("\nextern UINT16 __chip %s[];\n\n" % clist_name)
 
-        out.write("#endif /* __COPPER__ */\n")
+        out.write("#endif /* __%s__ */\n" % header_name)
 
     out_values = ["0x%03x" % value for value in clist]
     with open(outfile, "w") as out:
         out.write("#include <ratr0/data_types.h>\n\n")
-        out.write("\nUINT16 __chip clist[] = {\n")
+        out.write("UINT16 __chip %s[] = {\n" % clist_name)
         out.write("\t%s\n" % ', '.join(out_values))
         out.write("};\n")

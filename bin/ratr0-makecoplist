@@ -14,10 +14,11 @@ byte array in C.
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                      description=DESCRIPTION)
-    parser.add_argument('infile', help="input file")
-    parser.add_argument('outfile', help="output file")
-    parser.add_argument('--listname', default="copper", help="unique name for copper list within your project")
+    parser.add_argument('infile', help="input copper list file")
+    parser.add_argument('outfile', help="output C source file")
+    parser.add_argument('--listname', default="default_copper", help="unique name of copper list within your project")
     args = parser.parse_args()
     result, indexes = compile_clist.compile_clist(args.infile)
-    compile_clist.write_clist(result, indexes, args.outfile)
+    compile_clist.write_clist(result, indexes, args.outfile,
+                              clist_name=args.listname)
 

@@ -10,7 +10,7 @@ DESCRIPTION = 'ratr0-utils is a collection of utilities for game development usi
 LICENSE = 'GPL V3'
 URI = 'https://github.com/weiju/ratr0-utils'
 AUTHOR = 'Wei-ju Wu'
-VERSION = '0.2.0'
+VERSION = '0.2.1'
 
 KEYWORDS = ['ratr0', 'amiga', 'game', 'development', 'classic', 'ecs', 'aga']
 
