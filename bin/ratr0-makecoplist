@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+
+import argparse
+import ratr0.util.compile_clist as compile_clist
+
+
+DESCRIPTION = """ratr0-makeclist - RATR0 copper list compiler
+
+This tool turns a textual copper list description into a
+byte array in C.
+"""
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     description=DESCRIPTION)
+    parser.add_argument('infile', help="input file")
+    parser.add_argument('outfile', help="output file")
+    parser.add_argument('--listname', default="copper", help="unique name for copper list within your project")
+    args = parser.parse_args()
+    result, indexes = compile_clist.compile_clist(args.infile)
+    compile_clist.write_clist(result, indexes, args.outfile)
+
