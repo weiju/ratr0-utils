@@ -41,3 +41,13 @@ In addition, you can specify the following optional arguments:
 
   * ``--generatec``: instead of a RATR0 sprite file a C source code file will be generated. This
     can be useful for debugging or smaller programs.
+
+Creating more than one sprite
+-----------------------------
+
+We can use ``ratr0-makesprites`` to create more than one sprite frame in a
+sprite file. To do this, we design the source image so that the sprite
+frames are laid out in a horizontal manner. By default this tool assumes
+a sprite width of 16 pixels, so if the source image has a width that is
+a true multiple of 16, it will automatically create new sprite frames
+in the output file that are appended at the end.

@@ -73,13 +73,13 @@ def compile_clist(inpath):
             if len(line) == 0 or line.startswith('#'):
                 continue
             comps = line.split()
-            if comps[0] == 'CMOVE':
+            if comps[0] == 'MOVE':
                 compile_cmove(result, comps[1].split(","))
                 list_index += 2
-            elif comps[0] == 'CWAIT':
+            elif comps[0] == 'WAIT':
                 compile_cwait(result, comps[1].split(","))
                 list_index += 2
-            elif comps[0] == 'CEND':
+            elif comps[0] == 'END':
                 result.extend([0xffff, 0xfffe])
             elif comps[0].endswith(":"):
                 label = comps[0][:-1]
@@ -104,7 +104,7 @@ def write_clist(clist, indexes, outfile, clist_name="default_copper"):
         out.write("#define __%s__\n" % header_name)
 
         for label, index in indexes.items():
-            out.write("#define %s (%d)\n" % (label, index))
+            out.write("#define %s_%s (%d)\n" % (header_name, label, index))
         out.write("\n#define %s_SIZE_WORDS (%d)\n" % (header_name, len(clist)))
         out.write("#define %s_SIZE_BYTES (%d)\n" % (header_name, len(clist) * 2))
         out.write("\nextern UINT16 __chip %s[];\n\n" % clist_name)
