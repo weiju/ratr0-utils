@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>The ratr0-makesprites tool &#8212; ratr0-utils 0.2.1 documentation</title>
+    <title>The ratr0-makesprites tool &#8212; ratr0-utils 0.2.2 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=37f418d5"></script>
+    <script src="_static/documentation_options.js?v=000c92bf"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -73,6 +73,15 @@ can be useful for debugging or smaller programs.</p></li>
 </ul>
 </div></blockquote>
 </section>
+<section id="creating-more-than-one-sprite">
+<h2>Creating more than one sprite<a class="headerlink" href="#creating-more-than-one-sprite" title="Link to this heading">¶</a></h2>
+<p>We can use <code class="docutils literal notranslate"><span class="pre">ratr0-makesprites</span></code> to create more than one sprite frame in a
+sprite file. To do this, we design the source image so that the sprite
+frames are laid out in a horizontal manner. By default this tool assumes
+a sprite width of 16 pixels, so if the source image has a width that is
+a true multiple of 16, it will automatically create new sprite frames
+in the output file that are appended at the end.</p>
+</section>
 </section>
 
 
@@ -107,6 +116,7 @@ can be useful for debugging or smaller programs.</p></li>
 <li class="toctree-l1"><a class="reference internal" href="ratr0_maketiles.html">ratr0-maketiles</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ratr0-makesprites</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#parameters-in-detail">Parameters in detail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-more-than-one-sprite">Creating more than one sprite</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="ratr0_converttiled.html">ratr0-converttiled</a></li>

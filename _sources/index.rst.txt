@@ -14,6 +14,11 @@ programming language (both yet unreleased) and the Youtube programming series
 All of the above primarily target retro platforms (currently only the Commodore
 Amiga is supported) and therefore typically utilizes planar graphics and 8 bit sound formats.
 
+The general idea is to create data formats that need little or no processing
+on the Amiga system and do all of the conversion offline on a more modern
+systems where processing power is cheap and we have scripting languages
+that greatly simplify writing tools.
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:

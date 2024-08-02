@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>The ratr0-makecoplist tool &#8212; ratr0-utils 0.2.1 documentation</title>
+    <title>The ratr0-makecoplist tool &#8212; ratr0-utils 0.2.2 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=37f418d5"></script>
+    <script src="_static/documentation_options.js?v=000c92bf"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -64,6 +64,74 @@ optional arguments:
 </ul>
 </div></blockquote>
 </section>
+<section id="copper-list-format">
+<h2>Copper list format<a class="headerlink" href="#copper-list-format" title="Link to this heading">¶</a></h2>
+<p>The format of a copper list is hopefully intuitive enough for people with
+some basic knowledge of copper list programming.</p>
+<p>There are these basic commands</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MOVE</span> <span class="pre">&lt;dest&gt;,&lt;value&gt;</span></code>: move a value to the destination address</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">WAIT</span> <span class="pre">&lt;hpos&gt;,&lt;vpos&gt;[,hmask=&lt;mask&gt;|vmask=&lt;mask&gt;|BLTWAIT]*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SKIP</span> <span class="pre">&lt;hpos&gt;,&lt;vpos&gt;[,hmask=&lt;mask&gt;|vmask=&lt;mask&gt;|BLTWAIT]*</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">END</span></code>: end of copper list</p></li>
+</ul>
+</div></blockquote>
+<p><em>Remarks about argument lists</em></p>
+<p>In comma-separated arguments, there should be no spaces before the comma.
+Numeric values can either be specified in decimal or hexadecimal form.
+Hexadecimal values are prefixed with <code class="docutils literal notranslate"><span class="pre">0x</span></code>.</p>
+<p>There are also a few predefined values, e.g. register names or constants
+that can be used to set standard values for DMA and display window limits.</p>
+<p>E.g. you can use all standard names for custom chip registers (<code class="docutils literal notranslate"><span class="pre">BPLCON0</span></code>,
+<code class="docutils literal notranslate"><span class="pre">COLOR00</span></code>, …), or predefined constants</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DDFSTRT_VALUE_320</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DDFSTOP_VALUE_320</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DIWSTRT_VALUE_320</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DIWSTOP_VALUE_PAL_320</span></code></p></li>
+</ul>
+</div></blockquote>
+<p><em>Comments</em></p>
+<p>Comment lines are supported. A comment line starts with the <code class="docutils literal notranslate"><span class="pre">#</span></code> character.</p>
+<p><em>Index labels</em></p>
+<p>Index labels are markers that will generate helpful indexes to aid with
+replacing values in the copper list at run time.</p>
+</section>
+<section id="example-list">
+<h2>Example list:<a class="headerlink" href="#example-list" title="Link to this heading">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span># Default RATR0 copper list for 320x256 PAL display
+   MOVE   FMODE,0
+   MOVE   DDFSTRT,DDFSTRT_VALUE_320
+   MOVE   DDFSTOP,DDFSTOP_VALUE_320
+   MOVE   DIWSTRT,DIWSTRT_VALUE_320
+   MOVE   DIWSTOP,DIWSTOP_VALUE_PAL_320
+BPLCON0_INDEX:
+   MOVE  BPLCON0,0
+   MOVE  BPLCON2,0x060
+BPL1MOD_INDEX:
+   MOVE  BPL1MOD,0
+   MOVE  BPL2MOD,0
+BPL1PTH_INDEX:
+   MOVE  BPL1PTH,0
+   MOVE  BPL1PTL,0
+   MOVE  BPL2PTH,0
+   MOVE  BPL2PTL,0
+   MOVE  BPL3PTH,0
+   MOVE  BPL3PTL,0
+   MOVE  BPL4PTH,0
+   MOVE  BPL4PTL,0
+   MOVE  BPL5PTH,0
+   MOVE  BPL5PTL,0
+   MOVE  BPL6PTH,0
+   MOVE  BPL6PTL,0
+   ...
+
+   END
+</pre></div>
+</div>
+</section>
 </section>
 
 
@@ -100,6 +168,8 @@ optional arguments:
 <li class="toctree-l1"><a class="reference internal" href="ratr0_converttiled.html">ratr0-converttiled</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">ratr0-makecoplist</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#parameters-in-detail">Parameters in detail</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#copper-list-format">Copper list format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-list">Example list:</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tile_format.html">Tiles File Format</a></li>
