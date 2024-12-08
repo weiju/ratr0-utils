@@ -3,7 +3,6 @@
 """png_util_test.py
 """
 import unittest
-import xmlrunner
 import sys
 from ratr0.util import png_util
 
@@ -60,7 +59,7 @@ class PNGUtilTest(unittest.TestCase):  # pylint: disable-msg=R0904
         """an image that has 2x2 pixels all set to color 1"""
         im = MockImage((2, 2), [1, 1, 1, 1])
         planes, map_words_per_row = png_util.extract_planes(im, 1, False)
-        self.assertEquals(1, map_words_per_row)
+        self.assertEqual(1, map_words_per_row)
         row = 0b11 << (16 - 2)
         self.assertEqual([[row, row]], planes)
 
@@ -83,7 +82,4 @@ class PNGUtilTest(unittest.TestCase):  # pylint: disable-msg=R0904
 if __name__ == '__main__':
     SUITE = []
     SUITE.append(unittest.TestLoader().loadTestsFromTestCase(PNGUtilTest))
-    if len(sys.argv) > 1 and sys.argv[1] == 'xml':
-      xmlrunner.XMLTestRunner(output='test-reports').run(unittest.TestSuite(SUITE))
-    else:
-      unittest.TextTestRunner(verbosity=2).run(unittest.TestSuite(SUITE))
+    unittest.TextTestRunner(verbosity=2).run(unittest.TestSuite(SUITE))

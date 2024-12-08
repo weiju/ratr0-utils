@@ -1,0 +1,63 @@
+#!/usr/bin/env python3
+import argparse
+import os, sys
+import math
+
+"""
+BOBs calculator
+
+Based on the discussion in
+
+https://eab.abime.net/showthread.php?t=101707
+
+and the Javascript tool
+
+https://jsfiddle.net/zkwa9fnu/
+"""
+
+
+DESCRIPTION = """ratr0_calcnumbobs - calculate number of Bobs per frame.
+"""
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                     description=DESCRIPTION)
+
+    parser.add_argument('--bob_width', type=int, default=32, help="BOB width")
+    parser.add_argument('--bob_height', type=int, default=32, help="BOB height")
+    parser.add_argument('--display_width',
+                        type=int, default=320, help="display width")
+    parser.add_argument('--display_height', type=int, default=256,
+                        help="display height")
+    parser.add_argument('--num_planes', type=int, default=4,
+                        help="number of bit planes")
+    parser.add_argument('--num_sprites', type=int, default=0,
+                        help="number of sprites (0-8)")
+    parser.add_argument('--audio_channels', type=int, default=0,
+                        help="number of audio channels (0-4)")
+    parser.add_argument('--copper_moves', type=int, default=0,
+                        help="number of MOVEs in copper list")
+    parser.add_argument('--copper_waits', type=int, default=0,
+                        help="number of WAITs in copper list")
+    parser.add_argument('--scrolling', action="store_true",
+                        help="enable scrolling")
+
+
+    args = parser.parse_args()
+
+    scrolling_cycle = 1 if args.scrolling else 0
+    display_dma_cycles = ((args.display_width / 16) + scrolling_cycle) * args.display_height * args.num_planes;
+    refresh_cycles = 312 * 4
+    audio_cycles = 312 * args.audio_channels
+    sprite_cycles = args.display_height * args.num_sprites * 2
+    copper_cycles = (args.copper_moves * 2) + (args.copper_waits * 3)
+    free_dma_cycles = (226 * 312) - display_dma_cycles - refresh_cycles - audio_cycles - sprite_cycles - copper_cycles
+
+    print("display dma cycles: ", display_dma_cycles)
+    print("free dma cycles / frame: ", free_dma_cycles)
+    bob_dr_dma_cycles = 6 * math.ceil((args.bob_width + 16) / 16) * args.bob_height * args.num_planes
+    bob_sdr_dma_cycles = 8 * math.ceil((args.bob_width + 16) / 16) * args.bob_height * args.num_planes;
+    number_of_bobs_dr_per_frame = free_dma_cycles / bob_dr_dma_cycles;
+    number_of_bobs_sdr_per_frame = free_dma_cycles / bob_sdr_dma_cycles;
+    print("%0.2f BOBs / frame (draw/restore)" % number_of_bobs_dr_per_frame)
+    print("%0.2f BOBs / frame (save/draw/restore)" % number_of_bobs_sdr_per_frame)

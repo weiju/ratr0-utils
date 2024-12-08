@@ -10,7 +10,7 @@ DESCRIPTION = 'ratr0-utils is a collection of utilities for game development usi
 LICENSE = 'GPL V3'
 URI = 'https://github.com/weiju/ratr0-utils'
 AUTHOR = 'Wei-ju Wu'
-VERSION = '0.2.2'
+VERSION = '0.2.3'
 
 KEYWORDS = ['ratr0', 'amiga', 'game', 'development', 'classic', 'ecs', 'aga']
 
@@ -63,4 +63,5 @@ if __name__ == '__main__':
                    'bin/ratr0-makeplanes',
                    'bin/ratr0-converttiled',
                    'bin/ratr0-file',
-                   'bin/ratr0-wav2raw8'])
+                   'bin/ratr0-wav2raw8',
+                   'bin/ratr0-calcnumbobs'])

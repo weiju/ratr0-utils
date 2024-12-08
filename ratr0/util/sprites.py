@@ -105,8 +105,6 @@ def write_sprites(im, outpath, verbose, generatec):
     if len(planes) > 4:
         raise Exception('%d exceeded maximum number of planes (should be at most %d)' % (len(planes), 4))
     num_sprites = int((im.width / 16) * (depth / 2))
-    if num_sprites > 8:
-        raise Exception("Exceeded the depth + width maximum (2 planes+128 pixels or 4 planes*64 pixels) ")
 
     imgdata_size = 0
     if len(planes) == 4:
