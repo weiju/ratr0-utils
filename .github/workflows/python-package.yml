@@ -38,4 +38,3 @@ jobs:
     - name: Run unit tests
       run: |
         PYTHONPATH=. pytest
-        #PYTHONPATH=. python test/png_util_test.py
